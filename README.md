@@ -1,173 +1,126 @@
-# TaskNest - Task Management App
+# 🧸 TaskNest
 
-TaskNest is a task management application built with **Flutter**. It stores all data locally in **SQLite**, supports repeating tasks, subtasks with progress tracking, category filters, data export (CSV, PDF, email) and local notifications. The interface uses a warm beige and brown teddy-bear theme with a gingham background and supports light and dark modes.
+TaskNest is a task management app built with **Flutter** and **SQLite**. Add, edit, delete, categorize and complete tasks, repeat them on a schedule, track progress with subtasks, export your tasks, and get reminders when a task is due. Runs in **Google Chrome**, with an **Android APK** also provided.
+
+| | |
+|---|---|
+| 🎥 Video demonstration | `TODO: paste the video link here` |
+| 📦 Android APK | `TODO: paste the Releases link here` |
 
 ---
 
 ## Screenshots
 
-| Today | New task | Repeated |
-|---|---|---|
-| ![Today](screenshots/today.png) | ![New task](screenshots/new_task.png) | ![Repeated](screenshots/repeated.png) |
-
-| Completed | Settings | Dark mode |
-|---|---|---|
-| ![Completed](screenshots/completed.png) | ![Settings](screenshots/settings.png) | ![Dark](screenshots/dark.png) |
-
-## Demo video
-
-[Watch the demo video](https://drive.google.com/file/d/1PXDL6R2nLqUiPuBFJXC4WXsp2khpMkYg/view?usp=sharing)
-
-## Download
-
-The release APK is available in the [`release`](release/) folder (`app-release.apk`) or under the repository's **Releases** page.
+<table>
+  <tr>
+    <td width="50%"><img src="screenshots/today.png" alt="Today"><br><b>Today</b></td>
+    <td width="50%"><img src="screenshots/menu.png" alt="Side menu"><br><b>Side menu</b></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="screenshots/new_task.png" alt="New task"><br><b>New task</b></td>
+    <td width="50%"><img src="screenshots/new_task_options.png" alt="New task options"><br><b>Repeat, early reminder and subtasks</b></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="screenshots/dark.png" alt="Dark mode"><br><b>Dark mode</b></td>
+    <td width="50%"><img src="screenshots/export.png" alt="Export"><br><b>Export</b></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="screenshots/settings.png" alt="Settings"><br><b>Settings</b></td>
+    <td width="50%"></td>
+  </tr>
+</table>
 
 ---
 
 ## Features
 
-### Task management
-- **Add** a task with title, description, category, due date and time, and optional repeat settings.
-- **Edit** any task by tapping it.
-- **Delete** a task from the editor, or swipe it to the left. An **Undo** option appears after deleting.
-- **Mark as completed** by tapping the circle on the task. Completed tasks move to the **Completed** view automatically.
-- **Search** tasks by title or description.
-
-### Views
-| View | Shows |
-|---|---|
-| **Today** | Tasks due today, repeating tasks scheduled for today, and overdue tasks |
-| **Repeated** | Tasks that repeat daily or on selected weekdays |
-| **Completed** | Tasks that have been completed |
-| **All** | Every task |
-
-A summary card at the top shows today's progress, the number of remaining tasks and overdue tasks.
-
-### Categories
-Personal, Work, Study, Health and Other. Tasks can be filtered by category on every view.
-
-### Repeating tasks
-- Repeat **daily** or on **selected days of the week**.
-- Completion status resets automatically each day, and so do the subtasks of a repeating task.
-
-### Subtasks and progress tracking
-- Add any number of subtasks to a task.
-- Each task card shows a progress bar and percentage (for example `2/3 (66%)`).
-- Completing all subtasks completes the task.
-
-### Notifications
-- A local notification at the task's due time.
-- An optional **early reminder**: the user chooses how long before the task to be reminded (5, 10, 15, 30 minutes, 1 hour, 2 hours or 1 day). The default is **5 minutes before**, and it can be switched off.
-- Works for one-time, daily and weekly tasks.
-- Notifications show only the task title and a short line such as "Due in 5 min".
-
-### Customization
-- **Theme:** System, Light or Dark.
-- **Notification sound:** Default, Alarm, Ringtone or Silent, with a test button.
-
-### Export
-Export all tasks as **CSV**, **PDF**, or share both files by **email** from the share menu.
+- **Add, edit, delete** tasks (delete asks for confirmation and has **Undo**).
+- **Mark as completed**: the task moves to the Completed view automatically.
+- **Views** from the ☰ menu: Today, Repeated, Overdue, Completed, All tasks.
+- **Categories**: Personal, Study, Work, Health, Shopping, Other, with a filter on every view.
+- **Repeat tasks**: daily, selected days of the week, or every N days. A completed repeating task resets automatically on its next scheduled day.
+- **Progress tracking**: subtasks with a progress bar and percentage.
+- **Notifications**: a reminder at the due time and an optional early reminder (5, 10, 15, 30 minutes, 1 hour or 1 day before).
+- **Customization**: light, dark or system theme, and a choice of notification sounds (Chime, Bell, Pop, Alarm, Silent).
+- **Export** to **CSV**, **PDF** or **email**.
+- Past dates and times cannot be selected for a new task.
 
 ---
 
-## Technology
+## Tech stack
 
-| Purpose | Package |
+| Area | Package |
 |---|---|
-| Local database | `sqflite`, `path`, `path_provider` |
-| Notifications | `flutter_local_notifications`, `timezone` |
-| Preferences (theme, sound) | `shared_preferences` |
-| Date formatting | `intl` |
-| PDF export | `pdf` |
-| Sharing files and email | `share_plus` |
+| UI and logic | Flutter (Dart 3) |
+| Database | `sqflite` (Android), `sqflite_common_ffi_web` (Chrome) |
+| Settings | `shared_preferences` |
+| Notifications | `flutter_local_notifications`, `timezone`, browser Notification API |
+| Sounds | `audioplayers` |
+| Export | `pdf`, `share_plus`, `path_provider`, `url_launcher` |
 
-## Database schema (SQLite, version 3)
-
-```
-tasks(id, title, description, category, due, repeat_type, repeat_days,
-      done, last_done, reminder, sub_reset, remind_before)
-
-subtasks(id, task_id, title, done)
-```
-
-`repeat_type`: 0 = none, 1 = daily, 2 = selected days. `remind_before` is the early reminder in minutes.
-The database is upgraded automatically from older versions.
+---
 
 ## Project structure
 
 ```
-lib/main.dart        Application code (models, database, notifications, UI)
-pubspec.yaml         Dependencies
-android/             Android configuration (permissions, notification receivers)
-release/             Release APK
-screenshots/         Screenshots used in this README
+lib/
+├── main.dart                     # App entry point
+├── models/task.dart              # Task, Subtask and repeat-schedule logic
+├── data/                         # SQLite database (tasks + subtasks)
+├── logic/                        # Task controller and settings controller
+├── services/                     # Notifications, export, sounds, file saving
+├── ui/                           # Screens, task card, theme, widgets
+└── utils/format_utils.dart       # Date and time helpers
 ```
 
----
+### Database schema
 
-## Setup
-
-1. Install [Flutter](https://docs.flutter.dev/get-started/install) and Android Studio with the Android SDK.
-2. Clone the repository:
-   ```
-   git clone https://github.com/kashafx007/task-manager-app.git
-   cd task-manager-app
-   ```
-3. Install dependencies:
-   ```
-   flutter pub get
-   ```
-4. Connect an Android phone (USB debugging on) or start an emulator, then run:
-   ```
-   flutter run
-   ```
-5. Build the release APK:
-   ```
-   flutter build apk --release
-   ```
-   Output: `build/app/outputs/flutter-apk/app-release.apk`
-
-### Android configuration for notifications
-`android/app/src/main/AndroidManifest.xml` contains these permissions and receivers:
-- `POST_NOTIFICATIONS`, `SCHEDULE_EXACT_ALARM`, `RECEIVE_BOOT_COMPLETED`, `VIBRATE`
-- `ScheduledNotificationReceiver` and `ScheduledNotificationBootReceiver`
-
-`android/app/build.gradle.kts` enables core library desugaring (`isCoreLibraryDesugaringEnabled = true`) and adds the `desugar_jdk_libs` dependency.
-
-On Android 13 and above, allow the notification permission when the app first opens. On Android 12 and above, if reminders arrive late, turn on **Alarms & reminders** for the app in the phone's settings.
+```
+tasks    (id, title, description, category, due_date, repeat_type, repeat_days,
+          repeat_interval, reminder_minutes, is_completed, completed_at, created_at)
+subtasks (id, task_id → tasks.id (ON DELETE CASCADE), title, is_done)
+```
 
 ---
 
 ## User manual
 
-1. **Add a task:** tap **New task**, enter a title, choose a category, set the schedule and optional subtasks, then tap **Add task**.
-2. **Set a reminder:** in the Schedule section keep **Remind me** on and choose when to receive the early reminder.
-3. **Repeat a task:** choose **Daily** or **Weekly days** and select the days.
-4. **Complete a task:** tap the circle on the left of the task.
-5. **Use subtasks:** tap the arrow on a task card to expand it, then tick the subtasks.
-6. **Edit or delete:** tap a task to edit it. Use the trash icon, or swipe left, to delete. Tap **UNDO** to restore.
-7. **Filter and search:** use the category chips under the summary card, or the search icon at the top.
-8. **Export:** tap the share icon at the top and choose CSV, PDF or email.
-9. **Settings:** tap the gear icon to change the theme and notification sound.
+1. **Open the menu.** Tap ☰ (top left) to switch between *Today, Repeated, Overdue, Completed* and *All tasks*. The number beside each view is its task count.
+2. **Add a task.** Tap **New task**, enter a title, an optional description, pick a category, and choose the due date and time.
+3. **Repeat a task.** In the *Repeat* card choose *Daily*, *Selected days* or *Every N days*.
+4. **Early reminder.** Choose how long before the due time you want an extra reminder, or *None*.
+5. **Subtasks.** Type a subtask and press **+**. Tick subtasks on the task card and the progress bar updates.
+6. **Complete a task.** Tap the circle on the left of the card.
+7. **Edit or delete.** Tap ⋮ on a card. After deleting you can tap **Undo**.
+8. **Filter by category.** Tap a category button under the greeting. Tap it again to clear.
+9. **Export.** Tap the download icon, choose which tasks, then **CSV**, **PDF** or **Open email draft**.
+10. **Theme and sound.** Tap 🌙 / ☀️ for a quick theme switch, or open **Settings** ⚙️ to choose the theme and sound, allow notifications and send a test.
 
-## Testing
-
-| Test | Result |
-|---|---|
-| Add, edit, delete and undo delete | Passed |
-| Mark complete and find the task in Completed | Passed |
-| Daily and weekly repeat, automatic reset | Passed |
-| Subtask progress persists after restart | Passed |
-| Notification at due time and early reminder | Passed |
-| Notification sound options | Passed |
-| CSV and PDF export | Passed |
-| Light and dark theme persist after restart | Passed |
-| Layout on different screen sizes | Passed |
-
-> Update this table with your own test results before submitting.
+**Notifications:** in Chrome, reminders appear while the TaskNest tab is open. On Android they are scheduled with the system and also work when the app is closed.
 
 ---
 
-## Notes
-- Notifications and export work on Android. When the app is opened in a web browser, data is stored in browser storage and these two features are unavailable.
-- The app was developed as a Mobile Application Development course project.
+## Testing
+
+- [x] Add a task with title, description, category, due date and time
+- [x] A past date cannot be selected; a past time is rejected
+- [x] Edit a task and confirm the changes are saved
+- [x] Delete a task, then use **Undo**
+- [x] Mark a task as completed and see it in *Completed*
+- [x] Task data is still there after reloading / restarting the app
+- [x] Add subtasks and check the progress bar and percentage
+- [x] Daily, selected-days and every-N-days repeat work
+- [x] A completed repeating task resets on its next scheduled day
+- [x] A task whose time has passed appears in *Overdue*
+- [x] Category filter works in every view
+- [x] Light and dark themes switch correctly
+- [x] Notification sound can be changed and previewed
+- [x] The test notification and a real reminder are shown
+- [x] CSV, PDF and email export work
+- [x] The layout looks fine on a narrow and a wide window
+
+---
+
+## Author
+
+**Kashaf Amjad**, BSCS, COMSATS University Islamabad, Vehari Campus
