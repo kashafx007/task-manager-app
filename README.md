@@ -4,7 +4,7 @@ TaskNest is a task management app built with **Flutter** and **SQLite**. Add, ed
 
 | | |
 |---|---|
-| 🎥 Video demonstration | [Watch the demo video](https://drive.google.com/file/d/1PXDL6R2nLqUiPuBFJXC4WXsp2khpMkYg/view?usp=sharing) |
+| 🎥 Video demonstration | [Watch the demo video](https://drive.google.com/file/d/1T_lEDt9Xi7P9xq5EY7JM63GKA6k4YSkQ/view?usp=sharing) |
 | 📦 Android APK | [Download app-release.apk](https://github.com/kashafx007/task-manager-app/blob/main/apk/app-release.apk) |
 
 ---
